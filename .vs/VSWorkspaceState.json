@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Pruebas",
+    "\\source"
   ],
-  "SelectedNode": "\\C:\\Users\\ijavi\\Source\\Repos\\AM1_orbits",
+  "SelectedNode": "\\source\\hello.py",
   "PreviewInSolutionExplorer": false
 }
