@@ -1,9 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Pruebas",
-    "\\source"
+    "\\source",
+    "\\source\\Hito1",
+    "\\source\\Hito1\\Hito1"
   ],
-  "SelectedNode": "\\source\\hello.py",
+  "SelectedNode": "\\source\\Hito1\\Hito1\\Hito1.py",
   "PreviewInSolutionExplorer": false
 }
