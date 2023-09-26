@@ -13,7 +13,6 @@ def F_Kepler(t, U):
     return array( [vx, vy, -x/mr, -y/mr] )
 
 #EULER
-
 U = array( [1, 0, 0, 1] )
 x = array( zeros(N) )
 y = array( zeros(N) )
@@ -31,7 +30,6 @@ plt.plot(x, y)
 plt.show()
 
 # CRANK-NICOLSON
-
 U_cn  = array([1.0, 0.0, 0.0, 1.0])
 dt_cn = 0.01
 
@@ -55,7 +53,6 @@ plt.plot(x_cn, y_cn)
 plt.show()
 
 #RUNGE-KUTTA 4TH ORDER
-
 U_rk  = array([1.0, 0.0, 0.0, 1.0])
 
 x_rk = array(zeros(N))
@@ -78,4 +75,3 @@ for i in range(0,N):
     
 plt.plot(x_rk, y_rk)
 plt.show()
-    
