@@ -1,11 +1,9 @@
 
-from numpy import array, zeros, linspace
+from numpy import array, zeros, linspace, arange
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, newton
 
 ## HITO 2
-
-
 
 def F_Cauchy(U, t=0): # df/dx = x
     x = U[0]
@@ -55,13 +53,13 @@ def Integrate_ODE(U, F, scheme):
         
     return U
 
-N = 1000                         
-dt = 0.01                        
-t = array( zeros(N) )
+N = 100                         
+dt = 0.1                        
+t = arange(N)
 
 #Keplerian Orbit initial conditions
-U_k = array(zeros((4,N)))
-U_k[:,0] = array( [1, 0, 0, 1] )
+# U = array(zeros((4,N)))
+# U[:,0] = array( [1, 0, 0, 1] )
 
 #Cauchy df/dx = x initial conditions
 U = array(zeros((1,N)))
@@ -69,7 +67,6 @@ U[0,0] = 0.2
 
 U = Integrate_ODE(U, F_Cauchy, Euler)
 
-t = array( zeros((1,N)) )
-plt.axis('equal')
-plt.plot(U, t)
+# plt.axis('equal')
+plt.plot(U[0,:])
 plt.show()
