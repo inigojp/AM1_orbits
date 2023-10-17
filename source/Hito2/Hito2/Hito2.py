@@ -53,8 +53,8 @@ def Integrate_ODE(U, F, scheme):
         
     return U
 
-N = 100                         
-dt = 0.1                        
+N = 100
+dt = 0.01                        
 t = arange(N)
 
 #Keplerian Orbit initial conditions
@@ -63,12 +63,13 @@ t = arange(N)
 
 #Cauchy df/dx = x initial conditions
 U = array(zeros((1,N)))
-U[0,0] = 0.2
+U[:,0] = 0.2
 
-U = Integrate_ODE(U, F_Cauchy, Euler)
+U = Integrate_ODE(U, F_Cauchy, RK4)
 
-# plt.axis('equal')
 plt.plot(U[0,:])
+
 plt.show()
+
 
 #Prueba
