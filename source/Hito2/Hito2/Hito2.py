@@ -70,6 +70,3 @@ U = Integrate_ODE(U, F_Cauchy, RK4)
 plt.plot(U[0,:])
 
 plt.show()
-
-
-#Prueba
