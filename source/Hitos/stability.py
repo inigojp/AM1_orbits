@@ -13,7 +13,7 @@ def Crank_Nicolson(F,i):
     
     return newton(g, U[:,i])
 
-def RK4(F,i):
+def RK4(U,,dt,F,i):
     
     k1 = F( U[:,i], t )
     k2 = F( U[:,i] +k1*dt/2, t + dt/2 )
@@ -41,14 +41,14 @@ def Stability_Region(Scheme, N, x0, xf, y0, yf):
         for j in range(N):
 
             w = complex(x[i], y[i])
-            r = Scheme(1., 1., 0., lambda u, t: w*u )
+            r = Scheme(1., 1., lambda u, t: w*u )
             rho[i, j] = abs(r)
 
         return rho, x, y
     
 def test_Stability_regions():
 
-    schemes = [RK4, Inverse_Euler]
+    schemes = [RK4]
 
     for scheme in schemes:
         rho, x, y = Stability_Region(scheme, 100, -4, 2, -4, 4)
@@ -57,5 +57,8 @@ def test_Stability_regions():
         plt.grid()
         plt.show()
     
-if __name__ == '__main__':
+if __name__ == '__main__': 
     test_Stability_regions()
+
+# if __name__ == '__main__': Sirve para que este codigo solo se ejecute si es el main, 
+# de manera que si se importa este archivo en otro, al correr el otro este no se ejecute y muestre las gráficas
