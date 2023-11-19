@@ -2,7 +2,7 @@
 from numpy import array, zeros, linspace, arange
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, newton
-from Schemes.Schemes2 import *
+from Temp_Schemes.Schemes import *
 
 ## HITO 2
 
