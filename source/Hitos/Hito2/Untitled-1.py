@@ -1,6 +1,6 @@
 
 from numpy import array, zeros, linspace, arange
-from Schemes2 import Inverse_Euler
+from Temporal_schemes.Schemes2 import Inverse_Euler
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, newton
 import math

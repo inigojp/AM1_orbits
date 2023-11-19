@@ -2,6 +2,7 @@
 from numpy import array, zeros, linspace, arange
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, newton
+from Temporal_schemes.Schemes2 import Euler, Crank_Nicolson, RK4, Inverse_Euler
 
 ## HITO 2
 
@@ -23,57 +24,58 @@ def F_Kepler(U, t=0):
     
     return array( [vx, vy, -x/mr, -y/mr] )
 
-def Euler(F,i):
-    
-    return U[:,i] + dt * F(U[:,i])
-    
-def Crank_Nicolson(F,i):
-    
-    def g(x):
-        return x - a -dt/2 * (F(a) + F(x))
-    a = U[:,i]
-    
-    return newton(g, U[:,i])
 
-def RK4(F,i):
-    
-    k1 = F( U[:,i], t )
-    k2 = F( U[:,i] +k1*dt/2, t + dt/2 )
-    k3 = F( U[:,i] +k2*dt/2, t + dt/2 )
-    k4 = F( U[:,i] + k3*dt, t + dt )
+def Euler(F,U,t0, tf):
+    dt = tf-t0
+    return U + dt * F(U,t0)
+
+def RK4(F,U,t0, tf ):
+    dt = tf-t0
+    k1 = F( U, t0 )
+    k2 = F( U +k1*dt/2, t0 + dt/2 )
+    k3 = F( U +k2*dt/2, t0 + dt/2 )
+    k4 = F( U + k3*dt, t0 + dt )
      
     k = 1/6 * (k1 + 2*k2 + 2*k3 + k4)
     
-    return U[:,i] + dt * k
+    return U + dt * k
 
-def Inverse_Euler(F,i):
+def Crank_Nicolson(F, U, t0, tf):
+    dt = tf-t0
     def g(x):
-        return x - a - dt * F(x,t) 
-    a = U[:,i]
+        return x - a -dt/2 * (F(a,t0) + F(x,tf))
+    a = U
     
-    return newton(g, U[:,i])
+    return newton(g, U)
 
-def Integrate_ODE(U, F, scheme):
+def Inverse_Euler(F, U, t0, tf):
+    dt = tf-t0
+    def g(x):
+        return x - a - dt * F(x,tf) 
+    a = U
     
+    return newton(g, U)
+
+def Integrate_ODE(U, F, t, scheme):
+
     for i in range(0, N-1):
-        U[:,i+1] = scheme(F,i)
+        U[:,i+1] = scheme(F,U[:,i],t[i],t[i+1])
         
     return U
 
-N = 100
+N = 1000
 dt = 0.01                        
-t = arange(N)
+t = linspace(0, N*dt, N+1)
 
 #Keplerian Orbit initial conditions
-# U = array(zeros((4,N)))
-# U[:,0] = array( [1, 0, 0, 1] )
 
-#Cauchy df/dx = x initial conditions
-U = array(zeros((1,N)))
-U[:,0] = 0.2
+U = array(zeros((4,len(t)-1)))
+U[:,0] = array( [1, 0, 0, 1] )
 
-U = Integrate_ODE(U, F_Cauchy, RK4)
+U = Integrate_ODE(U, F_Kepler, t, RK4)
 
-plt.plot(U[0,:])
 
+#Plot
+plt.plot(U[0,:],U[1,:])
+plt.axis('equal')
 plt.show()
