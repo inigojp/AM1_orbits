@@ -3,58 +3,9 @@ from numpy import array, zeros, linspace, arange
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, newton
 from Temp_Schemes.Schemes import *
+from ODEs.ODE import F_Kepler
 
 ## HITO 2
-
-def F_Cauchy(U, t=0): # df/dx = x
-
-    x = U[0]
-    return x
-def ODE(U, t=0): # df/dx = x
-    x, y, vx, vy = [U[0], U[1], U[2], U[3]]
-    vx=1-4*x+x^2*y^2
-    vy=3*x-x^2*y
-
-    return array( [vx, vy] )
-
-def F_Kepler(U, t=0):
- 
-    x, y, vx, vy = [U[0], U[1], U[2], U[3]]
-    mr = (x**2 + y**2) ** 1.5
-    
-    return array( [vx, vy, -x/mr, -y/mr] )
-
-
-def Euler(F,U,t0, tf):
-    dt = tf-t0
-    return U + dt * F(U,t0)
-
-def RK4(F,U,t0, tf ):
-    dt = tf-t0
-    k1 = F( U, t0 )
-    k2 = F( U +k1*dt/2, t0 + dt/2 )
-    k3 = F( U +k2*dt/2, t0 + dt/2 )
-    k4 = F( U + k3*dt, t0 + dt )
-     
-    k = 1/6 * (k1 + 2*k2 + 2*k3 + k4)
-    
-    return U + dt * k
-
-def Crank_Nicolson(F, U, t0, tf):
-    dt = tf-t0
-    def g(x):
-        return x - a -dt/2 * (F(a,t0) + F(x,tf))
-    a = U
-    
-    return newton(g, U)
-
-def Inverse_Euler(F, U, t0, tf):
-    dt = tf-t0
-    def g(x):
-        return x - a - dt * F(x,tf) 
-    a = U
-    
-    return newton(g, U)
 
 def Integrate_ODE(U, F, t, scheme):
 
