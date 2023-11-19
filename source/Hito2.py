@@ -3,7 +3,7 @@ from numpy import array, zeros, linspace, arange
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, newton
 from Temp_Schemes.Schemes import *
-from ODEs.ODE import F_Kepler
+from ODEs.ODE import *
 
 ## HITO 2
 
@@ -20,10 +20,10 @@ t = linspace(0, N*dt, N+1)
 
 #Keplerian Orbit initial conditions
 
-U = array(zeros((4,len(t)-1)))
-U[:,0] = array( [1, 0, 0, 1] )
+U = array(zeros((2,len(t)-1)))
+U[:,0] = array( [1, 0] )
 
-U = Integrate_ODE(U, F_Kepler, t, RK4)
+U = Integrate_ODE(U, ODE, t, RK4)
 
 
 #Plot

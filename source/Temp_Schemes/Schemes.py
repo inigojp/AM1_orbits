@@ -1,7 +1,7 @@
 from scipy.optimize import newton
 
 
-def Euler(F,U,t0, tf):
+def Euler(F, U, t0, tf):
     dt = tf-t0
     return U + dt * F(U,t0)
 

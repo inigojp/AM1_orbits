@@ -7,9 +7,9 @@ def F_Cauchy(U, t=0): # df/dx = x
     return x
 
 def ODE(U, t=0): # df/dx = x
-    x, y, vx, vy = [U[0], U[1], U[2], U[3]]
-    vx=1-4*x+x^2*y^2
-    vy=3*x-x^2*y
+    x, y = [U[0], U[1]]
+    vx=1-4*x+x**2*y**2
+    vy=3*x-x**2*y
 
     return array( [vx, vy] )
 
