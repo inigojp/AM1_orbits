@@ -1,6 +1,6 @@
 
 from numpy import array, zeros, linspace, arange
-from Schemes import Euler, RK4, Crank_Nicolson, Inverse_Euler
+from Temporal_schemes.Schemes2 import Euler, RK4, Crank_Nicolson, Inverse_Euler
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve, newton
 import math
@@ -74,7 +74,7 @@ U2[:,0] = array( [1, 0.01] )
 #U[:,0] = 1.1
 
 #U = Integrate_ODE(U, ODE_Rayleigh, t, RK4)
-U2 = Integrate_ODE(U2, ODE_Rayleigh2, t, Inverse_Euler)
+U2 = Integrate_ODE(U2, ODE_Rayleigh2, t, Schemes2.Inverse_Euler)
 
 
 f1 = plt.figure()
