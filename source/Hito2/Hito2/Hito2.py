@@ -6,8 +6,15 @@ from scipy.optimize import fsolve, newton
 ## HITO 2
 
 def F_Cauchy(U, t=0): # df/dx = x
+
     x = U[0]
     return x
+def ODE(U, t=0): # df/dx = x
+    x, y, vx, vy = [U[0], U[1], U[2], U[3]]
+    vx=1-4*x+x^2*y^2
+    vy=3*x-x^2*y
+
+    returnarray( [vx, vy] )
 
 def F_Kepler(U, t=0):
  
