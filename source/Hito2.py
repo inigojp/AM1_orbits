@@ -15,7 +15,7 @@ def ODE(U, t=0): # df/dx = x
     vx=1-4*x+x^2*y^2
     vy=3*x-x^2*y
 
-    returnarray( [vx, vy] )
+    return array( [vx, vy] )
 
 def F_Kepler(U, t=0):
  
