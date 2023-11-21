@@ -36,14 +36,6 @@ def ODE_Van_Der_Por_1(U, t):
 
     return array( [vx, vy] )
 
-def ODE_Van_Der_Por_2(U, t): 
-    x, y = [U[0], U[1]]
-
-    vx=y
-    vy=-5*(x**2-1)*y-x
-
-    return array( [vx, vy] )
-
 def ODE_Rayleigh(U, t): 
     x, y = [U[0], U[1]]
 
@@ -52,11 +44,32 @@ def ODE_Rayleigh(U, t):
 
     return array( [vx, vy] )
 
-def ODE_Rayleigh2(U, t): 
-    x, y = [U[0], U[1]]
+def Lorentz(U, t):
+    x, y, z =  [U[0], U[1], U[2]]
 
-    vx=y
-    vy=x-x**3-y+3*math.cos(t)
+    vx = -10*x+10*y
+    vy = 28*x-x*z-y
+    vz = -(8/3)*z+x*y
 
-    return array( [vx, vy] )
+    return array( [vx, vy, vz] )
+
+def Rossler(U, t):
+    x, y, z =  [U[0], U[1], U[2]]
+    #a, b, c = 0.398,2, 4
+    vx = -y-z
+    vy = 0.398*y+x
+    vz = 2+z*(x-4)
+
+    return array( [vx, vy, vz] )
+
+def Rossler2(U, t):
+    x, y, z =  [U[0], U[1], U[2]]
+    #a, b, c = 0.398,2, 4
+    vx = -y-z
+    vy = 0.17*y+x
+    vz = 0.4+z*(x-8.5)
+
+    return array( [vx, vy, vz] )
+
+
 
