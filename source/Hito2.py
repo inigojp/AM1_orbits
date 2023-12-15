@@ -20,13 +20,21 @@ t = linspace(0, N*dt, N+1)
 
 #Keplerian Orbit initial conditions
 
-U = array(zeros((2,len(t)-1)))
-U[:,0] = array( [1, 0] )
+#Initial conditions Cauchy problem
+U0_c = array(zeros((2,len(t)-1)))
+U0_c[:,0] = array( [1, 0] )
 
-U = Integrate_ODE(U, ODE, t, RK4)
+#Initial conditions Keplerian orbit problem, circular orbit
+U0_k = array(zeros((4,len(t)-1)))
+U0_k[:,0] = array( [1, 0, 0, 1] )
 
+U_c = Integrate_ODE(U0_c, ODE, t, RK4)
+U_k = Integrate_ODE(U0_k, F_Kepler, t, Inverse_Euler)
 
 #Plot
-plt.plot(U[0,:],U[1,:])
+plt.plot(U_c[0,:],U_c[1,:])
+plt.axis('equal')
+plt.show()
+plt.plot(U_k[0,:],U_k[1,:])
 plt.axis('equal')
 plt.show()
