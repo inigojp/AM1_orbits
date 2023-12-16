@@ -114,3 +114,22 @@ def F_NBody(U, t, Nb, Nc):
            dvdt[i,:] = dvdt[i,:] +  d[:] / norm(d)**3 
     
      return F
+
+def CR3BP(U, t): #Circular restricted 3 body problem, non dimensional.
+
+    x = U[0]; y = U[1]; z = U[2]; vx = U[3];  vy = U[4]; vz = U[5]
+
+    m1 = 5.972E24       # Mass of main body (Earth)
+    m2 = 7.34767309E22  # Mass of second body (Moon)
+    pi2 = m2 /(m1+m2)
+    phi = math.sqrt((x-1+pi2)**2+y**2+z**2)
+    sigma = math.sqrt((x+pi2)**2+y**2+z**2)
+
+    dxdt = vx
+    dydt = vy
+    dzdt = vz
+    dvxdt = 2 * vy + x - (1-pi2)/(sigma**3)*(x+pi2) - pi2/(phi**3)*(x-1+pi2) 
+    dvydt = -2 * vx + y - (1-pi2)/(sigma**3)*y - pi2/(phi**3)*y
+    dvzdt = -(1-pi2)/(sigma**3)*z - pi2/(phi**3)*z
+
+    return array( [ dxdt, dydt, dzdt, dvxdt, dvydt, dvzdt ] )

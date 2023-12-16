@@ -4,7 +4,7 @@ from time import process_time
 
 
 def Integrate_ODE(U0, F, t, scheme):
-    N, Nv=  len(t)-1, len(U0)           # N = número evaluaciones, Nv = Número variables (x,y,vx,vy...)
+    N = len(t)-1; Nv = len(U0)           # N = número evaluaciones, Nv = Número variables (x,y,vx,vy...)
     U = zeros( (Nv, N))
     U[:,0] = U0
 

@@ -33,6 +33,7 @@ def Inverse_Euler(F, U, t0, tf):
     
     return newton(g, U)
 
+
 #Schemes adapted for stability 
 def Euler_st( U, dt, t, F): 
 
