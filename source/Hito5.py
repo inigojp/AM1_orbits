@@ -18,19 +18,19 @@ def Initial_positions_and_velocities( Nc, Nb ):
 
     # body 1 
     r0[0,:] = [ 1, 0, 0]
-    v0[0,:] = [ 0, 0.4, 0]
+    v0[0,:] = [ 0, 0, 0]
 
     # body 2 
-    v0[1,:] = [ 0, -0.4, 0] 
+    v0[1,:] = [ 0, 0, 0] 
     r0[1,:] = [ -1, 0, 0]
 
     # body 3 
     r0[2, :] = [ 0, 1, 0 ] 
-    v0[2, :] = [ -0.4, 0., 0. ] 
+    v0[2, :] = [ 0, 0., 0. ] 
          
     # body 4 
     r0[3, :] = [ 0, -1, 0 ] 
-    v0[3, :] = [ 0.4, 0., 0. ]  
+    v0[3, :] = [ 0.1, 0., 0. ]  
 
     return U0 
 
@@ -43,7 +43,7 @@ Nb = 4      # bodies
 Nc = 3      # coordinates 
 Nt = (N+1) * 2 * Nc * Nb
 
-t0 = 0; tf = 4 * 3.14 
+t0 = 0; tf = 50 * 3.14 
 Time = linspace(t0, tf, N+1) # Time(0:N) 
 
 U0 = Initial_positions_and_velocities( Nc, Nb )

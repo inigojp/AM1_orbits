@@ -11,6 +11,15 @@ def Integrate_ODE(U, F, t, scheme):
         U[:,i+1] = scheme(F,U[:,i],t[i],t[i+1])
         
     return U
+def Integrate_ODE_RK4_Variable(U, dt, t, F, scheme, q, Tolerance):
+
+    for i in range(0, N-1):
+        U[:,i+1] = scheme(U[:,i], dt, t, F, q, Tolerance)
+        
+    return U
+
+
+#def Embedded_RK( U, dt, t, F, q, Tolerance):
 
 N = 18000
 d_t = 0.001                        
@@ -21,7 +30,11 @@ U0 = array(zeros((4,len(t)-1)))
 U0[:,0] = array( [0.994, 0, 0, -2.001585106] )
 
 
-U = Integrate_ODE(U0, Arenstorf, t, GBS_Scheme)
+#U = Integrate_ODE(U0, Arenstorf, t, RK4)
+Tolerance = 1E-16
+q = 8
+
+U = Integrate_ODE_RK4_Variable(U0, d_t, t, Arenstorf, Embedded_RK, q, Tolerance)
 
 
 fig, ax = plt.subplots()

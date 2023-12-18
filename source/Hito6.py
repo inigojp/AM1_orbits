@@ -38,6 +38,7 @@ ax.plot(1 - pi2, 0, 'go', label="Moon")
 ax.plot(U0[0], U0[1], 'ro')
 ax.legend(loc="upper left")
 ax.set_aspect("equal")
+plt.title("Arenstof orbit in CR3BP")
 plt.show()
 
 #------------------------------- Lagrange points -------------------------------
@@ -72,6 +73,7 @@ ax.plot(-pi2, 0, 'bo', label="Earth")
 ax.plot(1 - pi2, 0, 'go', label="Moon")
 ax.legend(loc="upper left")
 ax.set_aspect("equal")
+plt.title("Lagrange points")
 plt.show()
 
 
@@ -96,7 +98,10 @@ ax.set_xlabel('x')
 ax.set_ylabel('y')
 ax.set_zlabel('z')
 ax.set_title('3D contour')
+plt.title("Stability contour of Lagrange points")
 plt.show()
+
+
 #-------------------------- Plot periodic orbits around Lagrange points --------------------------
 
 
@@ -134,6 +139,7 @@ ax.plot(hstack((x_2, x_2[::-1])), hstack((y_2, -y_2[::-1])))
 ax.plot(-pi2, 0, 'bo', label="$Earth$")
 ax.plot(1 - pi2, 0, 'go', label="Moon")
 ax.legend(loc="upper left")
+plt.title("Halo and Lissajous L1 orbits in sinodical frame")
 plt.show()
 
 # L2 Halo and Lissajous orbits 2D
@@ -153,6 +159,7 @@ ax.plot3D(U_Halo_L1[0,:], U_Halo_L1[1,:], U_Halo_L1[2,:], 'r', label ='Halo L1')
 ax.plot3D(U_Lissajous_L1[0,:], U_Lissajous_L1[1,:], U_Lissajous_L1[2,:], 'b', label ='Lissajous L1')
 ax.plot(1 - pi2, 0, 'go', label="Moon")
 ax.legend(loc="upper left")
+plt.title("3D Halo and Lissajous orbits")
 plt.show()
 
 # L2 Halo and Lissajous orbits 3D
