@@ -49,7 +49,7 @@ Time = linspace(t0, tf, N+1) # Time(0:N)
 U0 = Initial_positions_and_velocities( Nc, Nb )
 
 #U = odeint(F_NBody, U0, Time)
-U = Cauchy_problem(F, Time, U0, RK4_st) 
+U = Integrate_ODE( U0, F, Time, RK4) 
 
 Us  = reshape( U, (N+1, Nb, Nc, 2) ) 
 r   = reshape( Us[:, :, :, 0], (N+1, Nb, Nc) ) 

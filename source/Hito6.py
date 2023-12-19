@@ -8,12 +8,14 @@ from scipy.optimize import newton
 #--------------------------------------- CR3BP ---------------------------------------
 
 
-t0 = 0     # Non dimensional initial time
-tf = 20    # Non dimensional final time
-#N = 10000
-#t = linspace(0, N*dt, N+1)
-dt = 0.01                       
-t = linspace(t0, tf, int((tf-t0)/dt))
+#Inputs
+t0 = 0
+tf = 20
+dt = 0.01
+
+# Discretización de tiempo
+N = int((tf-t0) / dt)                    
+t = linspace(t0, tf, N)  # Tiempo inicial, tiempo final, número de puntos
 m1 = 5.972E24       # Mass of main body (Earth)
 m2 = 7.348E22       # Mass of second body (Moon)
 pi2 = m2 /(m1+m2)

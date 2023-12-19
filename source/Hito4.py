@@ -8,9 +8,14 @@ from Error.Stability import Stability_Region
 import matplotlib.pyplot as plt
 
 #----------------- Oscilador ----------------------------------
-N = 1000
-dt = 0.01                        
-t = linspace(0, N*dt, N+1)
+#Inputs
+t0 = 0
+tf = 50
+dt = 0.01
+
+# Discretización de tiempo
+N = int((tf-t0) / dt)                    
+t = linspace(t0, tf, N)  # Tiempo inicial, tiempo final, número de puntos
 
 #Initial conditions Oscillator
 
@@ -25,7 +30,7 @@ for scheme in schemes:
 
 #------------------ Region stabilidad numerica -----------------------
 
-schemes = [RK4_st, Crank_Nicolson_st, Euler_st, Inverse_Euler_st] 
+schemes = [RK4, Crank_Nicolson, Euler, Inverse_Euler] 
 Ns = 100
 for scheme in schemes: 
     rho, x, y  = Stability_Region(scheme, Ns, -4, 2, -4, 4)

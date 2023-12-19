@@ -1,71 +1,41 @@
+from matplotlib.pylab import eig
 from scipy.optimize import newton
-from numpy import array, zeros, linspace, arange, min, dot, float64
+from numpy import array, eye, zeros, linspace, arange, min, dot, float64
 from numpy.linalg import norm
 
-def Euler(F, U, t0, tf):
-    dt = tf-t0
-    return U + dt * F(U,t0)
+def Euler(F, U, dt, t ):
 
-def RK4(F, U, t0, tf ):
-    dt = tf-t0
-    k1 = F( U, t0 )
-    k2 = F( U +k1*dt/2, t0 + dt/2 )
-    k3 = F( U +k2*dt/2, t0 + dt/2 )
-    k4 = F( U + k3*dt, t0 + dt )
+    return U + dt * F(U,t)
+
+def RK4(F, U, dt, t ):
+
+    k1 = F( U, t )
+    k2 = F( U +k1*dt/2, t + dt/2 )
+    k3 = F( U +k2*dt/2, t + dt/2 )
+    k4 = F( U + k3*dt, t + dt )
      
     k = 1/6 * (k1 + 2*k2 + 2*k3 + k4)
     
     return U + dt * k
 
 
-def Crank_Nicolson(F, U, t0, tf):
-    dt = tf-t0
-    def g(x):
-        return x - a -dt/2 * (F(a,t0) + F(x,tf))
-    a = U
-    
-    return newton(g, U)
-
-def Inverse_Euler(F, U, t0, tf):
-    dt = tf-t0
-    def g(x):
-        return x - a - dt * F(x,tf) 
-    a = U
-    
-    return newton(g, U)
-
-
-# --------------------------------- Schemes adapted for stability ------------------------------------------
-def Euler_st( U, dt, t, F): 
-
-   return U + dt * F( U, t ) 
-
-def RK4_st( U, dt, t, F): 
-
-     k1 = F( U, t)
-     k2 = F( U + dt * k1/2, t + dt/2 )
-     k3 = F( U + dt * k2/2, t + dt/2 )
-     k4 = F( U + dt * k3,   t + dt   )
+def Crank_Nicolson(F, U, dt, t):
  
-     return U + dt * ( k1 + 2*k2 + 2*k3 + k4 )/6
+    def g(x):
+         return  x - a - dt/2 *  F(x, t + dt)
 
-def Inverse_Euler_st( U, dt, t, F): 
-
-   def  Residual_IE(X):  
-
-          return  X - U - dt * F(X, dt + t) 
-
-   return  newton( Residual_IE, U )
+    a = U  +  dt/2 * F( U, t) 
     
+    return newton(g, U)
 
-def Crank_Nicolson_st(U, dt, t, F ): 
+def Inverse_Euler(F, U, dt, t):
 
-    def Residual_CN(X): 
-         
-         return  X - a - dt/2 *  F(X, t + dt)
+    def g(x):
+        return x - a - dt * F(x,t) 
+    a = U
+    
+    return newton(g, U)
 
-    a = U  +  dt/2 * F( U, t)  
-    return newton( Residual_CN, U )
 
 # ------------------------------------------------- GBS -----------------------------------------------
 Tolerance = 1e-8
@@ -183,3 +153,91 @@ def RK_stages( F, U, t, dt, a, c ):
         k[i, :] = F( Up, t + c[i] * dt ) 
 
      return k 
+# ======================================== GBS ======================================
+def leap_frog(F, U, t1, t2):
+    dt = t2 - t1
+    N = len(U)
+    t_old = 0
+    
+    if t1 < t_old or t_old == 0:
+        U2 = U + dt * F(U, t1)
+    else:
+        U2 = U0 + 2 * dt * F(U, t1)
+        U0 = U
+    
+    t_old = t2
+
+    return U2
+
+def GBS_Scheme(U1, t1, t2, F, NL_fixed):
+    N_steps = 0
+    U1s = U1.copy()
+    t1s = t1
+    t2s = t1
+
+    while t2s < t2:
+        lambda_vals = Eigenvalues_Jacobian(F, U1s, t1s)
+        dt = 0.1 / max(abs(lambda_vals))
+
+        if t1s + dt > t2:
+            t2s = t2
+        else:
+            t2s = t1s + dt
+
+        U1s = GBS_Solution(F, t1s, t2s, U1s, NL_fixed)
+        t1s = t2s
+        N_steps += 1
+
+    return U1s
+
+def Eigenvalues_Jacobian(F, U, t, epsilon=1e-8):
+    N = len(U)
+    identity_matrix = eye(N)
+    jacobian_matrix = zeros((N, N))
+
+    # Calcula las derivadas parciales numericamente
+    for i in range(N):
+        U_perturbed = U.copy()
+        U_perturbed[i] += epsilon
+        F_perturbed = F(U_perturbed, t)
+        jacobian_matrix[:, i] = (F_perturbed - F(U, t)) / epsilon
+
+    # Usa eig de scipy para obtener los valores propios
+    eigenvalues, _ = eig(jacobian_matrix)
+
+    return eigenvalues
+
+def GBS_Solution(F, t1, t2, U1, Tolerance=1e-8):
+    NL = 1
+    Error = 1.0
+    NLmax = 8
+
+    Ucs = U1.copy()
+    Uc = U1.copy()
+    UL = zeros((NLmax+1, len(U1)))
+
+    while Error > Tolerance and NL < NLmax:
+        NL += 1
+        GBS_solutionL(F, t1, t2, U1, UL, Uc, Ucs, NL)
+        Error = norm(Uc - Ucs)
+
+    return Ucs
+
+def GBS_solutionL(F, t1, t2, U1, UL, Uc, Ucs, NL):
+    lambda_vals = Eigenvalues_Jacobian(F, U1, t1)
+    dt = (t2 - t1) / NL
+    next_level = True
+
+    for i in range(1, NL + 1):
+        UL[i, :] = leap_frog(U1, t1, t1 + i * dt, F)
+
+        if not next_level:
+            continue
+
+        if i > 1:
+            Uc[:] = Ucs + (UL[i, :] - Ucs) / (2 ** (2 * i) - 1)
+
+            if norm(Uc - Ucs) > 0.00001:
+                next_level = False
+
+    Ucs[:] = Uc

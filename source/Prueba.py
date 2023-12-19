@@ -24,13 +24,15 @@ def Cauchy_problem( F, t, U0, Temporal_scheme):
  return U
 
 N = 18000
-d_t = 0.001                        
+d_t = 0.01                        
 t = linspace(0,N*d_t, N+1)
 
 U0 = array(zeros((len(t)-1,4)))
 U0 = array( [0.994, 0, 0, -2.001585106] )
+#U0 = array(zeros((len(t)-1,4)))
+#U0 = array( [1, 0, 0, 1] )
 
-U = Cauchy_problem(F_Kepler, t, U0, GBS_Scheme)
+U = Cauchy_problem(Arenstorf, t, U0, leap_frog)
 
 
 plt.plot(U[:,0], U[:,1])

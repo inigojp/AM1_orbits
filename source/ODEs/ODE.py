@@ -2,15 +2,16 @@ from numpy import array, reshape, zeros
 from numpy.linalg import    norm
 import math
 
-def F_Cauchy(U, t=0): # df/dx = x
-
-    x = U[0]
-    return x
+def F_Cauchy(U, t=0): 
+    x = U[0]; y = U[1]
+    vx = x * (5 - x - 2/3 * y)
+    vy = y * (5 - y - 2/3 * x)
+    return array( [vx, vy] )
 
 def ODE(U, t=0): # df/dx = x
     x, y = [U[0], U[1]]
-    vx=1-4*x+x**2*y**2
-    vy=3*x-x**2*y
+    vx = 1-4*x+x**2*y**2
+    vy = 3*x-x**2*y
 
     return array( [vx, vy] )
 

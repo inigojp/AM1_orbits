@@ -16,4 +16,4 @@ Los hitos:
 - Hito 4: Regiones de estabilidad 
 - Hito 5: Integración del problema de los N cuerpos
 - Hito 6: Integración CR3BP, puntos de Lagrange
-- Hito 7: Integrar órbita de Arenstof mediante GBS, RK4 y RK4 de paso variable
+- Hito 7: Integrar órbita de Arenstorf mediante GBS, RK4 y RK4 de paso variable

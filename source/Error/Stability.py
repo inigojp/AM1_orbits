@@ -12,7 +12,7 @@ def Stability_Region(Scheme, N, x0, xf, y0, yf):
       for j in range(N):
 
           w = complex(x[i], y[j])
-          r = Scheme( 1., 1., 0., lambda u, t: w*u )
+          r = Scheme( lambda u, t: w*u, 1., 1., 0. )
           rho[i, j] = abs(r) 
 
     return rho, x, y 

@@ -9,10 +9,10 @@ from Integrador import Integrate_ODE
 
 def Error_ODE( t, order, U0, F, Scheme): # Order = Euler =1, RK4 = 4...
                            
-       N = len(t)-1; Nv = len(U0)  # N = número evaluaciones, Nv = Número variables (x,y,vx,vy...)
+       N = len(t)-1; Nv = len(U0)  # N = número evaluaciones, Nv = Número variables vector estado (x,y,vx,vy...)
        t1 = t                      # Tiempo primera malla
        t2 = zeros(2*N+1)           # Tiempo malla refinada
-       Error = zeros((Nv, N))
+       Error = zeros((Nv, N+1))
        
        for i in range(N):  
            t2[2*i]   = t1[i] 
@@ -20,11 +20,11 @@ def Error_ODE( t, order, U0, F, Scheme): # Order = Euler =1, RK4 = 4...
        t2[2*N] = t1[N]
       
        
-       U1 =   Integrate_ODE(U0, F, t1,  Scheme) 
-       U2 =   Integrate_ODE(U0, F, t2,  Scheme)    
+       U1 =  Integrate_ODE(U0, F, t1,  Scheme) 
+       U2 =  Integrate_ODE(U0, F, t2,  Scheme)    
        
-       for i in range(N):  
-            Error[:,i] = ( U2[:, 2*i]- U1[:, i] )/( 1 - 1./2**order ) 
+       for i in range(N+1):  
+            Error[:,i] = ( U2[:, 2*i] - U1[:, i] )/( 1 - 1./2**order ) 
         
        Solution = U1 + Error 
        
@@ -36,7 +36,7 @@ def Temporal_convergence_rate( t, m, U0, F, scheme ): # Numero de mallas
       log_E = zeros(m) 
       log_N = zeros(m)
       N = len(t)-1
-      t1 =t
+      t1 = t
       U1 = Integrate_ODE( U0 ,F, t1, scheme) 
      
 
@@ -46,7 +46,7 @@ def Temporal_convergence_rate( t, m, U0, F, scheme ): # Numero de mallas
          t2[0:N+1:2] =  t1; t2[1:N:2] = ( t1[1:int(N/2)+1]  + t1[0:int(N/2)] )/ 2 
          U2 = Integrate_ODE( U0, F, t2,  scheme)           
         
-         error = norm( U2[:, N-1] - U1[:, int( (N-1)/2 )] ) 
+         error = norm( U2[:, N] - U1[:, int( (N)/2 )] ) 
          log_E[i] = log10( error );  log_N[i] = log10( N )
          t1 = t2;  U1 = U2;   
 
