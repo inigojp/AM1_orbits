@@ -1,5 +1,6 @@
 # AM1_orbits
-Iñigo Javier Palacios Martínez
+<p>Iñigo Javier Palacios Martínez
+</p>
 El GitHub está estructurado de la siguiente forma:
 
 - Esquemas temporales en Carpeta Temp_Schemes, archivo Schemes.py, RK4, Crank-Nicolson, Euler y Euler inverso.
@@ -8,6 +9,7 @@ El GitHub está estructurado de la siguiente forma:
 
 Dos funciones para integrar las ecuaciones en Integrador.py
 
+Los hitos:
 - Hito 1: Integrar órbita de Kepler con métodos RK4, Crank-Nicolson y Euler
 - Hito 2: Separar métodos en modulos, integrar problema genérico de Cauchy
 - Hito 3: Estimación de error mediante interpolacion de Richardson
