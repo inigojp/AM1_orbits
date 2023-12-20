@@ -36,54 +36,6 @@ def Inverse_Euler(F, U, dt, t):
     
     return newton(g, U)
 
-
-# ------------------------------------------------- GBS -----------------------------------------------
-Tolerance = 1e-8
-NL_fixed = 3
-N_GBS_effort = 1
-
-def GBS_Scheme(F, U1, t0, tf):
-    global Tolerance
-    global NL_fixed
-    global N_GBS_effort
-
-    if NL_fixed > 0:
-        GBS_solution_NL(U1, t0, tf, F, NL_fixed)
-    else:
-        raise ValueError("NL_fixed must be greater than 0 for fixed scheme")
-
-def GBS_solution_NL(U1, t0, tf, F, NL):
-    N = mesh_refinement(NL)
-    U = zeros((NL, len(U1)))
-
-    for i in range(NL):
-        Modified_midpoint_scheme(U1, t0, tf, F, U[i, :], N[i])
-
-    U2 = Corrected_solution_Richardson(N, U)
-    return U2
-
-def mesh_refinement(Levels):
-    return arange(1, Levels + 1)
-
-def Modified_midpoint_scheme(U1, t0, tf, F, U2, N):
-    h = (tf - t0) / (2 * N)
-    U = zeros((len(U1), 2 * N + 2))
-    U[:, 0] = U1
-    U[:, 1] = U[:, 0] + h * F(U[:, 0], t0)
-
-    for i in range(1, 2 * N + 1):
-        ti = t0 + i * h
-        U[:, i + 1] = U[:, i - 1] + 2 * h * F(U[:, i], ti)
-
-    U2[:] = (U[:, 2 * N + 1] + 2 * U[:, 2 * N] + U[:, 2 * N - 1]) / 4.0
-
-def Corrected_solution_Richardson(N, U):
-    h = 1.0 / (2 * N)
-    x = h ** 2
-    W = 1.0 / (x * (x - 1))
-    Uc = dot(W / x, U) / sum(W / x)
-    return Uc
-
 #------------------------------------------ RK4 de paso variable ------------------------------------
 def Embedded_RK( U, dt, t, F, q, Tolerance): 
     
@@ -153,8 +105,8 @@ def RK_stages( F, U, t, dt, a, c ):
         k[i, :] = F( Up, t + c[i] * dt ) 
 
      return k 
-# ======================================== GBS ======================================
-def leap_frog(F, U, t1, t2):
+# ============================ Leap frog ======================================
+def Leap_Frog(U, t1, t2, F):
     dt = t2 - t1
     N = len(U)
     t_old = 0
@@ -169,75 +121,97 @@ def leap_frog(F, U, t1, t2):
 
     return U2
 
+
+# ========================== GBS RODRI ======================================
+    
+    #Funcion del esquema temporal GBS
 def GBS_Scheme(U1, t1, t2, F, NL_fixed):
-    N_steps = 0
-    U1s = U1.copy()
-    t1s = t1
-    t2s = t1
+    # Inicializacion de variables
+    N_steps = 0  # Contador de pasos de tiempo
+    U1s = U1.copy()  # Copia de la solucion inicial
+    t1s = t1  # Tiempo inicial del paso
+    t2s = t1  # Tiempo final del paso
 
     while t2s < t2:
+        # Calculo de los valores propios del jacobiano
         lambda_vals = Eigenvalues_Jacobian(F, U1s, t1s)
+        # Determinacion del tamano del paso
         dt = 0.1 / max(abs(lambda_vals))
 
+        # Actualizacion del tiempo final del paso
         if t1s + dt > t2:
             t2s = t2
         else:
             t2s = t1s + dt
 
+        # Aplicacion de GBS_Solution para avanzar en el tiempo
         U1s = GBS_Solution(F, t1s, t2s, U1s, NL_fixed)
+        # Actualizacion del tiempo inicial para el proximo paso
         t1s = t2s
         N_steps += 1
 
     return U1s
 
-def Eigenvalues_Jacobian(F, U, t, epsilon=1e-8):
-    N = len(U)
-    identity_matrix = eye(N)
-    jacobian_matrix = zeros((N, N))
+def Eigenvalues_Jacobian(F, U, t):
+    # Inicializacion de variables
+    N = len(U)  # Numero de elementos en U
+    identity_matrix = eye(N)  # Matriz identidad NxN
+    jacobian_matrix = zeros((N, N))  # Matriz jacobiana inicializada con ceros
+    epsilon = 1e-8  # Valor pequeno para la perturbacion numerica
 
-    # Calcula las derivadas parciales numericamente
+    # Calculo de las derivadas parciales numericas
     for i in range(N):
         U_perturbed = U.copy()
         U_perturbed[i] += epsilon
         F_perturbed = F(U_perturbed, t)
         jacobian_matrix[:, i] = (F_perturbed - F(U, t)) / epsilon
 
-    # Usa eig de scipy para obtener los valores propios
+    # Calculo de los valores propios usando eig de scipy
     eigenvalues, _ = eig(jacobian_matrix)
 
     return eigenvalues
 
-def GBS_Solution(F, t1, t2, U1, Tolerance=1e-8):
-    NL = 1
-    Error = 1.0
-    NLmax = 8
+def GBS_Solution(F, t1, t2, U1, NL):
+    # Inicializacion de variables
+   # NL = 1  # Numero inicial de niveles de correccion
+    Error = 1.0  # Inicializacion del error
+    NLmax = 8  # Numero maximo de niveles permitidos
+    Tolerance=1e-8
 
-    Ucs = U1.copy()
-    Uc = U1.copy()
-    UL = zeros((NLmax+1, len(U1)))
+    Ucs = U1.copy()  # Solucion corregida
+    Uc = U1.copy()  # Solucion actualizada
+    UL = zeros((NLmax+1, len(U1)))  # Matriz de soluciones en diferentes niveles
 
     while Error > Tolerance and NL < NLmax:
-        NL += 1
+        NL += 1  # Incremento del numero de niveles
+        # Aplicacion de GBS_solutionL para avanzar en el tiempo
         GBS_solutionL(F, t1, t2, U1, UL, Uc, Ucs, NL)
+        # Calculo de la norma del error
         Error = norm(Uc - Ucs)
 
     return Ucs
 
 def GBS_solutionL(F, t1, t2, U1, UL, Uc, Ucs, NL):
+    # Calculo de los valores propios del jacobiano
     lambda_vals = Eigenvalues_Jacobian(F, U1, t1)
+    # Calculo del tamano del paso
     dt = (t2 - t1) / NL
     next_level = True
 
     for i in range(1, NL + 1):
-        UL[i, :] = leap_frog(U1, t1, t1 + i * dt, F)
+        # Aplicacion de leap_frog para avanzar en el tiempo
+        UL[i, :] = Leap_Frog(U1, t1, t1 + i * dt, F)
 
         if not next_level:
             continue
 
         if i > 1:
+            # Correccion utilizando Ucs y UL
             Uc[:] = Ucs + (UL[i, :] - Ucs) / (2 ** (2 * i) - 1)
 
+            # Verificacion de la convergencia
             if norm(Uc - Ucs) > 0.00001:
                 next_level = False
 
+    # Actualizacion de la solucion corregida
     Ucs[:] = Uc

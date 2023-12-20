@@ -7,7 +7,7 @@ El GitHub está estructurado de la siguiente forma:
 - Ecuaciones diferenciales en ODES, ODE.py. Órbitas keplerianas, problema de los N cuerpos, Osciladores...
 - Funciones para determinar el error numérico mediante extrapolación de Richardson y para calcular la convergencia de los métodos. En carpeta Error, Richardson.py y Stability.py
 
-Dos funciones para integrar las ecuaciones en Integrador.py
+Una función para integrar las ecuaciones en Integrador.py
 
 Los hitos:
 - Hito 1: Integrar órbita de Kepler con métodos RK4, Crank-Nicolson y Euler

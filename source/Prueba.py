@@ -5,7 +5,7 @@ from ODEs.ODE import *
 import matplotlib.pyplot as plt
 from time import process_time
 from matplotlib.animation import FuncAnimation
-
+from Integrador import Integrate_ODE
 
 def Cauchy_problem( F, t, U0, Temporal_scheme): 
 
@@ -32,7 +32,7 @@ U0 = array( [0.994, 0, 0, -2.001585106] )
 #U0 = array(zeros((len(t)-1,4)))
 #U0 = array( [1, 0, 0, 1] )
 
-U = Cauchy_problem(Arenstorf, t, U0, leap_frog)
+U = Integrate_ODE(Arenstorf, t, U0, Leap_frog)
 
 
 plt.plot(U[:,0], U[:,1])

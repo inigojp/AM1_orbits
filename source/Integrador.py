@@ -13,3 +13,12 @@ def Integrate_ODE(U0, F, t, scheme):
         
     return U
 
+def Integrate_ODE_GBS(U0, F, t, scheme, NL_fixed):
+    N = len(t)-1; Nv = len(U0)           # N = número evaluaciones, Nv = Número variables (x,y,vx,vy...)
+    U = zeros( (N+1, Nv))
+    U[0,:] = U0
+
+    for i in range(N):
+        U[i+1,:] = scheme( U[i,:], t[i], t[i+1], F, NL_fixed)
+        
+    return U
