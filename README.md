@@ -17,3 +17,7 @@ Los hitos:
 - Hito 5: Integración del problema de los N cuerpos
 - Hito 6: Integración CR3BP, puntos de Lagrange
 - Hito 7: Integrar órbita de Arenstorf mediante GBS, RK4 y RK4 de paso variable
+
+<p align="center">
+  <img src=".\Organizacion_de_modulos.png" alt="Descripción de la imagen">
+</p>
