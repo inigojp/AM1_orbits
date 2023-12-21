@@ -19,5 +19,5 @@ Los hitos:
 - Hito 7: Integrar órbita de Arenstorf mediante GBS, RK4 y RK4 de paso variable
 
 <p align="center">
-  <img src=".\Organizacion_de_modulos.png" alt="Descripción de la imagen">
+  <img src=".\Organizacion_de_Modulos.png" alt="Descripción de la imagen">
 </p>
