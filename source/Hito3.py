@@ -52,10 +52,10 @@ plt.show()
 
 
 #----------------------------------- Convergencia ----------------------------------------
-N_mallas = 8 # El tiempo de computo es extremedamente dependiente de el número de mallas, pueidendo alargarse a minutos para N_mallas > 5, tf > 50 y dt < 0.01
+N_mallas = 2 # El tiempo de computo es extremedamente dependiente de el número de mallas, pueidendo alargarse a minutos para N_mallas > 5, tf > 50 y dt < 0.01
 Convergence_RK4 = Temporal_convergence_rate( t, N_mallas, U0_k, F_Kepler, RK4 )
 Convergence_CN = Temporal_convergence_rate( t, N_mallas, U0_k, F_Kepler, Crank_Nicolson )
-#Convergence_IE = Temporal_convergence_rate( t, N_mallas, U0_k, F_Kepler, Inverse_Euler )
+""" Convergence_IE = Temporal_convergence_rate( t, N_mallas, U0_k, F_Kepler, Inverse_Euler ) """
 Convergence_E = Temporal_convergence_rate( t, N_mallas, U0_k, F_Kepler, Euler )
 
 log_E_RK4 = abs(Convergence_RK4[1])
@@ -65,7 +65,7 @@ log_E_CN = abs(Convergence_CN[1])
 log_N_CN = Convergence_CN[2]
 
 """ log_E_IE = abs(Convergence_IE[1])
-log_N_IE = Convergence_IE[2] """
+log_N_IE = Convergence_IE[2]  """
 
 log_E_E = abs(Convergence_E[1])
 log_N_E = Convergence_E[2] 

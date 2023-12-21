@@ -34,7 +34,7 @@ U0_r[:,0] = array( [1, 0] )
 
 
 U_c = Integrate_ODE(U0_c, ODE, t, RK4)
-U_r = Integrate_ODE(U0_r, ODE_Rayleigh, t, RK4)
+U_r = Integrate_ODE(U0_r, ODE_Rayleigh, t, Inverse_Euler)
 
 #Plot
 plt.plot(U_c[0,:],U_c[1,:])

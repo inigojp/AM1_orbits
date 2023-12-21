@@ -8,7 +8,7 @@ from Integrador import *
 # Inputs
 t0 = 0
 tf = 17.065216 
-dt = 0.01
+dt = 0.0001
 
 # Discretización de tiempo
 N = int((tf-t0) / dt)                    
@@ -16,11 +16,11 @@ t = linspace(t0, tf, N)  # Tiempo inicial, tiempo final, número de puntos
 NL_fixed = 1
 
 # Arenstof initial conditions
-U0 = array( [0.994, 0, 0, -2.001585106] )
+#U0 = array( [0.994, 0, 0, -2.001585106] )
+U0 = array( [1.2, 0, 0, -1.049357510] )
+U = Integrate_ODE(U0,  Arenstorf, t, RK4)
 
-U = Integrate_ODE_GBS(U0,  Arenstorf, t, GBS_Scheme, NL_fixed)
-
-plt.plot(U[:,0], U[:,1])
+plt.plot(U[0,:], U[1,:])
 plt.show()
 
 

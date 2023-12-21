@@ -26,7 +26,7 @@ def Crank_Nicolson(F, U, dt, t):
 
     a = U  +  dt/2 * F( U, t) 
     
-    return newton(g, U)
+    return newton(g, U, maxiter=200)
 
 def Inverse_Euler(F, U, dt, t):
 
@@ -34,7 +34,7 @@ def Inverse_Euler(F, U, dt, t):
         return x - a - dt * F(x,t) 
     a = U
     
-    return newton(g, U)
+    return newton(g, U, maxiter=200)
 
 #------------------------------------------ RK4 de paso variable ------------------------------------
 def Embedded_RK( U, dt, t, F, q, Tolerance): 
